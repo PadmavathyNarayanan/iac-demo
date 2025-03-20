@@ -19,6 +19,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'mvn clean package'
+                sh 'mv target/*.jar target/myapp.jar'  // Rename JAR
             }
         }
 
