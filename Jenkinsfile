@@ -3,14 +3,16 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "app:latest"
-        DOCKER_REPO = "paddy1123/tfapp"
+        DOCKER_REPO = "paddy1123/iac-tf-app:latest"
         KUBE_NAMESPACE = "default"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-repo/myapp.gi'
+                withCredentials([usernamePassword(credentialsId: 'github-padma', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+                    git url: "https://$GIT_USER:$GIT_TOKEN@github.com/PadmavathyNarayanan/iac-demo.git", branch: 'main'
+                }
             }
         }
 
@@ -34,8 +36,8 @@ pipeline {
 
         stage('Push to Docker Hub') {
             steps {
-                withCredentials([string(credentialsId: 'docker-hub', variable: 'DOCKER_PASSWORD')]) {
-                    sh 'echo $DOCKER_PASSWORD | docker login -u your-dockerhub-username --password-stdin'
+                withCredentials([string(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                     sh 'docker tag $DOCKER_IMAGE $DOCKER_REPO:latest'
                     sh 'docker push $DOCKER_REPO:latest'
                 }
