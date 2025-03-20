@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: myapp
-        image: your-dockerhub-username/myapp:latest
+        image: paddy1123/ioc-tf-app:latest
         ports:
         - containerPort: 8080
