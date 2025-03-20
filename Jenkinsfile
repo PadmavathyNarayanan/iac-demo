@@ -5,6 +5,7 @@ pipeline {
         DOCKER_IMAGE = "app:latest"
         DOCKER_REPO = "paddy1123/iac-tf-app"
         KUBE_NAMESPACE = "default"
+        KUBECONFIG = "$WORKSPACE/kubeconfig"  // Set kubeconfig path
     }
 
     stages {
@@ -50,8 +51,9 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh 'kubectl apply -f k8s/deployment.yaml'
-            }
+                 withCredentials([file(credentialsId: 'kubeconfig-file', variable: 'KUBECONFIG')]) {
+                    sh 'kubectl apply -f k8s/deployment.yaml'
+                }
         }
     }
 }
