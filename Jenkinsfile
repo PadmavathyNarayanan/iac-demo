@@ -41,11 +41,10 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', 
                                   usernameVariable: 'DOCKER_USER', 
                                   passwordVariable: 'DOCKER_PASSWORD')]) {
-    sh 'echo $DOCKER_PASSWORD | docker login -u "$DOCKER_USER" --password-stdin'
-    sh 'docker tag $DOCKER_IMAGE $DOCKER_REPO:latest'
-    sh 'docker push $DOCKER_REPO:latest'
-}
-
+                    sh 'echo $DOCKER_PASSWORD | docker login -u "$DOCKER_USER" --password-stdin'
+                    sh 'docker tag $DOCKER_IMAGE $DOCKER_REPO:latest'
+                    sh 'docker push $DOCKER_REPO:latest'
+                }
             }
         }
 
