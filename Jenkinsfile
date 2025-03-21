@@ -5,7 +5,7 @@ pipeline {
         DOCKER_IMAGE = "app:latest"
         DOCKER_REPO = "paddy1123/iac-tf-app"
         KUBE_NAMESPACE = "default"
-        KUBECONFIG = "$WORKSPACE/kubeconfig"  // Set kubeconfig path
+        KUBECONFIG = "/var/lib/jenkins/.kube/config" // Set kubeconfig path
     }
 
     stages {
